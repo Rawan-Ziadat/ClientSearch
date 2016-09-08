@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+
+    tools:context="com.example.rawan.clientsearch.Menu"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="147dp"
+            android:layout_height="36dp"
+            android:text="shalom.weiss@gmail.com"
+            android:id="@+id/textView"
+            android:layout_gravity="right|bottom"
+            android:textSize="10dp" />
+
+        <TextView
+            android:layout_width="145dp"
+            android:layout_height="40dp"
+            android:text="Shalom Weiss"
+            android:id="@+id/tv_fullname"
+            android:layout_gravity="right|center_vertical"
+            android:textSize="20dp"
+            android:autoText="false" />
+
+        <ImageView
+            android:layout_width="106dp"
+            android:layout_height="89dp"
+            android:id="@+id/imageView"
+            android:layout_gravity="left|center_vertical"
+            android:src="@drawable/profile_circle"
+             />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView2"
+            android:layout_gravity="left|bottom" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#e0b26d"
+        android:onClick="search"
+        android:clickable="true">
+
+        <TextView
+            android:layout_width="215dp"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            android:id="@+id/textView2"
+            android:layout_gravity="right|center_vertical"
+            android:textColor="#ffffff"
+            android:textSize="25dp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.13"
+        android:foreground="#7ec59d">
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.23"
+        android:foreground="#4aaab5"></FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.22"
+        android:background="#7775ad"></FrameLayout>
+</LinearLayout>

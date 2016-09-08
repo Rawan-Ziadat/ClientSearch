@@ -7,9 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -20,15 +23,19 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class MainActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity {
 
     private EditText title , fromyear , toyear;
     private Button searchbutton ;
+    private JSONObject returnedjson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //should disaper title
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_search);
+
         title = (EditText) findViewById(R.id.title_edittext);
         fromyear = (EditText) findViewById(R.id.fromyear_editText);
         toyear = (EditText) findViewById(R.id.toYear_editText);
@@ -36,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
         searchbutton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 //perform action on click
-
                 String titlestr= title.getText().toString();
                 String fromyearstr= fromyear.getText().toString();
                 String toyearstr= toyear.getText().toString();
@@ -47,7 +53,10 @@ public class MainActivity extends AppCompatActivity {
                 total[3]= "123456";
                 Search searchtask = new Search(total);
                 searchtask.execute();
+                //check if json fetched
+                if(returnedjson!=null){
 
+                }
 
 
             }
@@ -56,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public class Search extends AsyncTask<String[], Void, JSONObject> {
-
 
         //    private String _ssfor;
         //    private String _sby;
@@ -87,9 +95,8 @@ public class MainActivity extends AppCompatActivity {
                         "http://ec2-52-43-108-148.us-west-2.compute.amazonaws.com:8080/useraccount/search/dosearchbytitle?";
                 Log.v("doinbackground", "Here 1");
 
-
                 Uri builtUri = Uri.parse(_SEARCH_URL).buildUpon()
-                        .appendQueryParameter("userId", _userID)
+                        .appendQueryParameter("userid", _userID)
                         .appendQueryParameter("title", _title)
                         .appendQueryParameter("fromyear", _fromyear)
                         .appendQueryParameter("toyear", _toyear)
@@ -98,8 +105,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.v("URL", builtUri.toString());
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.connect();
-
-
                 InputStream inputStream = urlConnection.getInputStream();
                 StringBuffer buffer = new StringBuffer();
                 if (inputStream == null) {
@@ -122,7 +127,8 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 serverJsonStr = buffer.toString();
-                Log.d("PROBLEM", serverJsonStr);
+                Log.v("JSON",serverJsonStr);
+
 
             } catch (IOException e) {
                 Log.e("LOGE", "Error ", e);
@@ -140,13 +146,47 @@ public class MainActivity extends AppCompatActivity {
                         Log.e("LOGE", "Error closing stream", e);
                     }
                 }
+                final String LOG_TAG = "tag";
+                final String LOG_STATUS = "status";
 
+                JSONObject serverJson = null;
+                try {
+                    serverJson = new JSONObject(serverJsonStr);
+                    return serverJson;
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
                 return null;
 
-
             }
+
         }
+
+        @Override
+        protected void onPostExecute(final JSONObject success) {
+
+
+            try {
+                JSONArray list =success.getJSONArray("list");
+                //get arraysize (length -1 )
+                //int arraysize =list.length();
+
+                JSONObject book =list.getJSONObject(0);
+                JSONObject book2 =list.getJSONObject(1);
+                JSONObject book3 =list.getJSONObject(2);
+
+                String bookid =book.getString("recordId");
+
+                Log.e("back from do in back",bookid);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            returnedjson =success;
+        }
+
     }
 }
 
